@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WALK-DRONE DATA CENTER</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* ===== YOUR EXISTING THEME STYLES ===== */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(ellipse at bottom, #0f172a 0%, #000000 100%);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(#22d3ee 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    header {
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #1e3a8a, #7c3aed);
+      text-align: center;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    .animated-title {
+      font-size: 28px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #facc15;
+      animation: glowFade 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowFade {
+      0% {
+        text-shadow: 0 0 5px #facc15, 0 0 10px #facc15;
+        opacity: 0.7;
+      }
+      100% {
+        text-shadow: 0 0 20px #facc15, 0 0 30px #facc15;
+        opacity: 1;
+      }
+    }
+
+    .container {
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #22d3ee;
+      text-shadow: 0 0 10px #22d3ee;
+    }
+
+    .title .highlight {
+      color: #facc15;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.9);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .typewriter {
+      font-family: monospace;
+      font-size: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #22d3ee;
+      width: 0;
+      animation: typing 4s steps(18, end) infinite, blink 0.7s step-end infinite alternate, colorCycle 8s linear infinite;
+    }
+
+    @keyframes typing {
+      0% { width: 0 }
+      50% { width: 26ch }
+      100% { width: 0 }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
+
+    @keyframes colorCycle {
+      0%   { color: #facc15; }
+      25%  { color: #3b82f6; }
+      50%  { color: #ffffff; }
+      75%  { color: #9ca3af; }
+      100% { color: #facc15; }
+    }
+
+    .card p {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+      background: #1f2933;
+      border: 1px solid #22d3ee;
+      padding: 15px;
+      border-radius: 15px;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s;
+      text-align: center;
+      text-shadow: 0 0 5px #22d3ee;
+      text-decoration: none;
+      display: block;
+    }
+
+    .btn:hover {
+      background: #22d3ee;
+      color: black;
+      box-shadow: 0 0 20px #22d3ee;
+      transform: scale(1.05);
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+      color: #9ca3af;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== NEW: YOUTUBE DOWNLOADER SPECIFIC STYLES ===== */
+    .downloader-card {
+      background: rgba(17, 24, 39, 0.95);
+      border: 2px solid #22d3ee;
+      box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
+    }
+
+    .input-group {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    #videoUrl {
+      flex: 1;
+      min-width: 250px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #475569;
+      background: rgba(15, 23, 42, 0.7);
+      color: white;
+      font-size: 16px;
+    }
+
+    #videoUrl:focus {
+      outline: none;
+      border-color: #22d3ee;
+      box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.3);
+    }
+
+    .btn-fetch {
+      background: linear-gradient(135deg, #1e3a8a, #7c3aed);
+      border-color: #7c3aed;
+      font-weight: bold;
+      padding: 16px 30px;
+      min-width: 180px;
+    }
+
+    .btn-fetch:hover {
+      background: linear-gradient(135deg, #7c3aed, #1e3a8a);
+      box-shadow: 0 0 25px rgba(124, 58, 237, 0.7);
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(34, 211, 238, 0.3);
+      border-top-color: #22d3ee;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .result-box {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(0, 50, 0, 0.2);
+      border-radius: 12px;
+      border-left: 5px solid #10b981;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .error-box {
+      display: none;
+      border-left: 5px solid #f87171;
+      background: rgba(80, 0, 0, 0.2);
+    }
+
+    .download-ready-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      color: black;
+      padding: 15px 25px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 15px;
+      border: none;
+      text-shadow: none;
+    }
+
+    .download-ready-link:hover {
+      background: linear-gradient(135deg, #34d399, #10b981);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+    }
+
+    /* ===== MOBILE RESPONSIVENESS ===== */
+    @media (max-width: 768px) {
+      .animated-title { font-size: 22px; }
+      .title { font-size: 26px; }
+      .input-group { flex-direction: column; }
+      #videoUrl, .btn-fetch { width: 100%; }
+      .buttons { grid-template-columns: 1fr; }
+      .container { padding: 15px; }
+    }
+
+    @media (max-width: 480px) {
+      .animated-title { font-size: 18px; letter-spacing: 2px; }
+      header { padding: 30px 15px; }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <header>
+    <div class="animated-title">WALK-DRONE DATA CENTER</div>
+  </header>
+
+  <div class="container">
+    <div class="title">First <span class="highlight">Project</span></div>
+
+    <!-- ===== YOUTUBE DOWNLOADER CARD ===== -->
+    <div class="card downloader-card">
+      <h2 class="typewriter">WALK-DRONE YT DOWNLOADER</h2>
+      <p>Download any YouTube video or short instantly. Enter link below ⬇️</p>
+      
+      <div class="input-group">
+        <input 
+          type="url" 
+          id="videoUrl" 
+          placeholder="Paste YouTube Link: https://www.youtube.com/watch?v=..." 
+          autocomplete="off"
+        >
+        <button class="btn btn-fetch" id="downloadBtn">
+          <i class="fas fa-bolt"></i> FETCH DOWNLOAD LINK
+        </button>
+      </div>
+      
+      <div class="loading" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p>Processing your request...</p>
+      </div>
+      
+      <div class="result-box" id="resultBox">
+        <h3 style="color: #10b981;"><i class="fas fa-check-circle"></i> DOWNLOAD READY!</h3>
+        <p>Your video has been processed successfully.</p>
+        <p><strong>Details:</strong> <span id="videoTitle">Video - Ready</span></p>
+        <a href="#" class="btn download-ready-link" id="directDownloadLink" target="_blank">
+          <i class="fas fa-file-download"></i> DOWNLOAD VIDEO NOW
+        </a>
+      </div>
+      
+      <div class="result-box error-box" id="errorBox">
+        <h3 style="color: #f87171;"><i class="fas fa-exclamation-triangle"></i> ERROR</h3>
+        <p><strong>Reason:</strong> <span id="errorText">Something went wrong.</span></p>
+      </div>
+    </div>
+    <!-- ===== END DOWNLOADER CARD ===== -->
+
+  <footer>
+    © 2026 • Site by WALK-DRONE • All rights reserved
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const videoUrlInput = document.getElementById('videoUrl');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      const resultBox = document.getElementById('resultBox');
+      const errorBox = document.getElementById('errorBox');
+      const directDownloadLink = document.getElementById('directDownloadLink');
+      const videoTitleSpan = document.getElementById('videoTitle');
+      const errorTextSpan = document.getElementById('errorText');
+      
+      // Your API Configuration
+      const API_BASE_URL = 'https://foreign-marna-sithaunarathnapromax-9a005c2e.koyeb.app/api/ytapi';
+      const API_KEY = '9f90690fbecea81b3e3b9fd2b8e7b53c571c121df4eba253b1b1a2ada30d49ed';
+      
+      // URL Validation Function
+      function isValidYouTubeUrl(url) {
+        const patterns = [
+          /youtube\.com\/watch\?v=/,  // Regular videos
+          /youtube\.com\/shorts\//,    // Shorts
+          /youtu\.be\//,               // Short URL
+          /youtube\.com\/embed\//,     // Embed
+        ];
+        return patterns.some(pattern => pattern.test(url));
+      }
+      
+      // Main Download Function
+      downloadBtn.addEventListener('click', async function() {
+        const videoUrl = videoUrlInput.value.trim();
+        
+        // Validation
+        if (!videoUrl || !isValidYouTubeUrl(videoUrl)) {
+          showError('ERROR: Please enter a valid YouTube URL (e.g., https://www.youtube.com/watch?v=... or https://youtube.com/shorts/...)');
+          return;
+        }
+        
+        // UI Reset and show loading
+        hideAll();
+        loadingSpinner.style.display = 'block';
+        
+        try {
+          // Construct API URL
+          const encodedUrl = encodeURIComponent(videoUrl);
+          const apiUrl = `${API_BASE_URL}?url=${encodedUrl}&fo=1&qu=360&apiKey=${API_KEY}`;
+          
+          console.log('DEBUG: Calling API:', apiUrl);
+          
+          // Fetch Request with timeout
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 15000);
+          
+          const response = await fetch(apiUrl, { signal: controller.signal });
+          clearTimeout(timeoutId);
+          
+          if (!response.ok) {
+            throw new Error(`Network Error: ${response.status}`);
+          }
+          
+          // Parse JSON Response
+          const responseData = await response.json();
+          console.log('DEBUG: API Response:', responseData);
+          
+          // Extract download link
+          if (responseData && responseData.downloadData && responseData.downloadData.url) {
+            const downloadUrl = responseData.downloadData.url;
+            const format = responseData.format || 'HQ';
+            const developer = responseData.developer || 'asitha.top';
+            
+            // Update UI with success
+            videoTitleSpan.textContent = `Quality: ${format}p | Source: ${developer}`;
+            directDownloadLink.href = downloadUrl;
+            resultBox.style.display = 'block';
+            
+            // Scroll to result
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            throw new Error('Server Error: Could not find download link.');
+          }
+          
+        } catch (error) {
+          console.error('ERROR DETAILS:', error);
+          let userMessage = `Failed: ${error.message}.`;
+          if (error.name === 'AbortError') {
+            userMessage = 'Request timeout. Server is slow or unreachable.';
+          }
+          showError(userMessage);
+        } finally {
+          loadingSpinner.style.display = 'none';
+        }
+      });
+      
+      // Utility Functions
+      function hideAll() {
+        loadingSpinner.style.display = 'none';
+        resultBox.style.display = 'none';
+        errorBox.style.display = 'none';
+      }
+      
+      function showError(message) {
+        errorTextSpan.textContent = message;
+        errorBox.style.display = 'block';
+        errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      
+      // Enter key support
+      videoUrlInput.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+          downloadBtn.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
